@@ -368,3 +368,7 @@ Responsive.sk is a web development company specializing in creating modern, resp
 ## Roadmap
 
 We're planning to expand this package with integrations for other frameworks and libraries. Check out our [TODO list](TODO-COMMUNITY.md) for upcoming features and ways to contribute.
+
+## Community
+
+We're looking to collaborate with Laminas and Cycle ORM communities to create integrations for these frameworks. If you're interested in contributing, please check out our [TODO list](TODO-COMMUNITY.md) and get in touch!
