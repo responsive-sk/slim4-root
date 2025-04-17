@@ -1,0 +1,55 @@
+{
+    "name": "responsive-sk/slim4-root",
+    "description": "Root path management with auto-discovery for Slim 4 applications",
+    "version": "1.0.0",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "slim",
+        "slim4",
+        "root",
+        "path",
+        "filesystem",
+        "auto-discovery",
+        "path-validation",
+        "path-normalization"
+    ],
+    "authors": [
+        {
+            "name": "Responsive.sk Team",
+            "email": "info@responsive.sk",
+            "homepage": "https://responsive.sk"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "slim/slim": "^4.0",
+        "psr/container": "^1.0 || ^2.0"
+    },
+    "require-dev": {
+        "php-di/php-di": "^6.0",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^9.6",
+        "slim/psr7": "^1.0",
+        "squizlabs/php_codesniffer": "^3.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Slim4\\Root\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Slim4\\Root\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests",
+        "phpstan": "phpstan analyse src tests --level=max"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

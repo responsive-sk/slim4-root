@@ -1,0 +1,27 @@
+{
+    "name": "slim4/path-example",
+    "description": "Example application for Slim4 Path",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "slim/slim": "^4.0",
+        "slim/psr7": "^1.0",
+        "php-di/php-di": "^6.0",
+        "slim4/path": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../"
+        }
+    ],
+    "scripts": {
+        "start": "php -S localhost:8080 -t public"
+    }
+}
