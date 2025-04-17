@@ -1,7 +1,6 @@
 {
     "name": "responsive-sk/slim4-root",
     "description": "Root path management with auto-discovery for Slim 4 applications",
-    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
