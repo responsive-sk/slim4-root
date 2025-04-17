@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Slim4 Root
 
 Root path management with auto-discovery for Slim 4 applications. Say goodbye to relative paths like `__DIR__ . '/../../../config'` and hello to clean, consistent path access.
@@ -364,3 +365,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## About Responsive.sk
 
 Responsive.sk is a web development company specializing in creating modern, responsive web applications using the latest technologies and best practices.
+=======
+# slim4-root
+>>>>>>> 5e71b8871d9b4e79a9d05b9ccf2ab4fb8ce5e9fb
