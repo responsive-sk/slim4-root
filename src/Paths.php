@@ -194,4 +194,39 @@ class Paths implements PathsInterface
     {
         return $this->paths;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBuildPath(string $buildDirectory = 'build'): string
+    {
+        return $this->getPublicPath() . '/' . $buildDirectory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBuildAssetsPath(string $buildDirectory = 'build'): string
+    {
+        return $this->getBuildPath($buildDirectory) . '/assets';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getViteManifestPath(string $buildDirectory = 'build'): string
+    {
+        $possiblePaths = [
+            $this->getBuildPath($buildDirectory) . '/manifest.json',
+            $this->getBuildPath($buildDirectory) . '/.vite/manifest.json',
+        ];
+
+        foreach ($possiblePaths as $path) {
+            if (file_exists($path)) {
+                return $path;
+            }
+        }
+
+        return $this->getBuildPath($buildDirectory) . '/.vite/manifest.json';
+    }
 }

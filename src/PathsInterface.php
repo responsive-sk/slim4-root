@@ -108,4 +108,28 @@ interface PathsInterface
      * @return array<string, string> The paths
      */
     public function getPaths(): array;
+
+    /**
+     * Get the build path.
+     *
+     * @param string $buildDirectory Build directory name (default: 'build')
+     * @return string The build path
+     */
+    public function getBuildPath(string $buildDirectory = 'build'): string;
+
+    /**
+     * Get the build assets path.
+     *
+     * @param string $buildDirectory Build directory name (default: 'build')
+     * @return string The build assets path
+     */
+    public function getBuildAssetsPath(string $buildDirectory = 'build'): string;
+
+    /**
+     * Get the Vite manifest path.
+     *
+     * @param string $buildDirectory Build directory name (default: 'build')
+     * @return string The Vite manifest path
+     */
+    public function getViteManifestPath(string $buildDirectory = 'build'): string;
 }

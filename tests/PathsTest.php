@@ -267,6 +267,73 @@ class PathsTest extends TestCase
     }
 
     /**
+     * Test getBuildPath.
+     *
+     * @return void
+     */
+    public function testGetBuildPath(): void
+    {
+        $rootPath = '/var/www/app';
+        $paths = new Paths($rootPath);
+
+        $this->assertSame('/var/www/app/public/build', $paths->getBuildPath());
+        $this->assertSame('/var/www/app/public/dist', $paths->getBuildPath('dist'));
+    }
+
+    /**
+     * Test getBuildAssetsPath.
+     *
+     * @return void
+     */
+    public function testGetBuildAssetsPath(): void
+    {
+        $rootPath = '/var/www/app';
+        $paths = new Paths($rootPath);
+
+        $this->assertSame('/var/www/app/public/build/assets', $paths->getBuildAssetsPath());
+        $this->assertSame('/var/www/app/public/dist/assets', $paths->getBuildAssetsPath('dist'));
+    }
+
+    /**
+     * Test getViteManifestPath.
+     *
+     * @return void
+     */
+    public function testGetViteManifestPath(): void
+    {
+        $rootPath = sys_get_temp_dir() . '/slim4-path-test-' . uniqid();
+        mkdir($rootPath . '/public/build/.vite', 0777, true);
+        file_put_contents($rootPath . '/public/build/.vite/manifest.json', '{}');
+
+        $paths = new Paths($rootPath);
+
+        $this->assertSame($rootPath . '/public/build/.vite/manifest.json', $paths->getViteManifestPath());
+
+        // Test with a different build directory
+        mkdir($rootPath . '/public/dist', 0777, true);
+        file_put_contents($rootPath . '/public/dist/manifest.json', '{}');
+
+        $this->assertSame($rootPath . '/public/dist/manifest.json', $paths->getViteManifestPath('dist'));
+
+        // Clean up
+        $this->removeDirectory($rootPath);
+    }
+
+    /**
+     * Test getViteManifestPath with non-existent manifest.
+     *
+     * @return void
+     */
+    public function testGetViteManifestPathWithNonExistentManifest(): void
+    {
+        $rootPath = '/var/www/app';
+        $paths = new Paths($rootPath);
+
+        $this->assertSame('/var/www/app/public/build/.vite/manifest.json', $paths->getViteManifestPath());
+        $this->assertSame('/var/www/app/public/dist/.vite/manifest.json', $paths->getViteManifestPath('dist'));
+    }
+
+    /**
      * Remove directory recursively.
      *
      * @param string $path The path
