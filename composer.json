@@ -1,6 +1,6 @@
 {
     "name": "responsive-sk/slim4-root",
-    "description": "Root path management with auto-discovery for Slim 4 applications",
+    "description": "Root path management with auto-discovery and base path detection for Slim 4 applications",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -11,7 +11,8 @@
         "filesystem",
         "auto-discovery",
         "path-validation",
-        "path-normalization"
+        "path-normalization",
+        "basepath"
     ],
     "authors": [
         {

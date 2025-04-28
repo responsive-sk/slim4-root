@@ -1,6 +1,6 @@
 # Slim4 Root
 
-Root path management with auto-discovery for Slim 4 applications. Say goodbye to relative paths like `__DIR__ . '/../../../config'` and hello to clean, consistent path access.
+Root path management with auto-discovery and base path detection for Slim 4 applications. Say goodbye to relative paths like `__DIR__ . '/../../../config'` and hello to clean, consistent path access.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/responsive-sk/slim4-root.svg?style=flat-square)](https://packagist.org/packages/responsive-sk/slim4-root)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
@@ -14,6 +14,7 @@ Root path management with auto-discovery for Slim 4 applications. Say goodbye to
 - **Dedicated exception handling** for path-related errors
 - **Enhanced developer experience** with more intuitive API
 - **No more relative paths** with `../` - everything is relative to the root
+- **Base path detection** for applications running in subdirectories
 
 ## Features
 
@@ -22,6 +23,7 @@ Root path management with auto-discovery for Slim 4 applications. Say goodbye to
 * Support for custom directory structures
 * Path **validation** and **normalization**
 * Middleware for accessing paths in route handlers
+* **Base path detection** for applications running in subdirectories
 * PSR-11 container integration
 * No dependencies (except Slim 4 and PSR Container)
 * Fully tested
@@ -157,7 +159,7 @@ PathsProvider::register(
 $paths = $container->get(Slim4\Root\PathsInterface::class);
 ```
 
-### With Middleware
+### With Paths Middleware
 
 ```php
 use Slim4\Root\PathsMiddleware;
@@ -178,6 +180,22 @@ $app->get('/', function ($request, $response) {
 
     return $response;
 });
+```
+
+### With Base Path Detection
+
+```php
+use Slim4\Root\BasePathMiddleware;
+use Slim\Factory\AppFactory;
+
+// Create app
+$app = AppFactory::createFromContainer($container);
+
+// Add the middleware to detect and set the base path
+$app->add(new BasePathMiddleware($app));
+
+// Now all routes will work correctly even if your app is in a subdirectory
+$app->get('/', HomeAction::class);
 ```
 
 ### Integration with Twig
@@ -238,6 +256,10 @@ $container->set(LoggerInterface::class, function (ContainerInterface $container)
 - `path(string $path)` - Get a path relative to the root path
 - `getPaths()` - Get all paths as an associative array
 
+### BasePathMiddleware
+
+- `process(ServerRequestInterface $request, RequestHandlerInterface $handler)` - Process the request and set the base path for the Slim application
+
 ### PathsDiscoverer
 
 - `discover(string $rootPath)` - Discover paths in the given root path
@@ -282,6 +304,7 @@ $paths = new Paths(
 | Path normalization | ❌ No | ✅ Yes |
 | Error handling | ❌ Generic exceptions | ✅ Dedicated exceptions |
 | Relative paths | ❌ Manual `../` | ✅ Everything relative to root |
+| Base path detection | ❌ No | ✅ Yes |
 | Test coverage | ✅ Good | ✅ Excellent |
 | Flexibility | ✅ Good | ✅ Excellent |
 
