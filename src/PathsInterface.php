@@ -120,16 +120,20 @@ interface PathsInterface
     /**
      * Get the build assets path.
      *
-     * @param string $buildDirectory Build directory name (default: 'build')
-     * @return string The build assets path
+     * Note: This method ignores the $buildDirectory parameter and always returns the public/assets path.
+     *
+     * @param string $buildDirectory Build directory name (ignored, kept for backward compatibility)
+     * @return string The assets path (public/assets)
      */
     public function getBuildAssetsPath(string $buildDirectory = 'build'): string;
 
     /**
      * Get the Vite manifest path.
      *
-     * @param string $buildDirectory Build directory name (default: 'build')
-     * @return string The Vite manifest path
+     * Note: This method ignores the $buildDirectory parameter and always looks in the public/assets directory.
+     *
+     * @param string $buildDirectory Build directory name (ignored, kept for backward compatibility)
+     * @return string The Vite manifest path (in public/assets directory)
      */
     public function getViteManifestPath(string $buildDirectory = 'build'): string;
 }

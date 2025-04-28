@@ -208,7 +208,7 @@ class Paths implements PathsInterface
      */
     public function getBuildAssetsPath(string $buildDirectory = 'build'): string
     {
-        return $this->getBuildPath($buildDirectory) . '/assets';
+        return $this->getPublicPath() . '/assets';
     }
 
     /**
@@ -217,8 +217,8 @@ class Paths implements PathsInterface
     public function getViteManifestPath(string $buildDirectory = 'build'): string
     {
         $possiblePaths = [
-            $this->getBuildPath($buildDirectory) . '/manifest.json',
-            $this->getBuildPath($buildDirectory) . '/.vite/manifest.json',
+            $this->getPublicPath() . '/assets/manifest.json',
+            $this->getPublicPath() . '/assets/.vite/manifest.json',
         ];
 
         foreach ($possiblePaths as $path) {
@@ -227,6 +227,6 @@ class Paths implements PathsInterface
             }
         }
 
-        return $this->getBuildPath($buildDirectory) . '/.vite/manifest.json';
+        return $this->getPublicPath() . '/assets/.vite/manifest.json';
     }
 }

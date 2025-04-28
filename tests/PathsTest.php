@@ -290,8 +290,9 @@ class PathsTest extends TestCase
         $rootPath = '/var/www/app';
         $paths = new Paths($rootPath);
 
-        $this->assertSame('/var/www/app/public/build/assets', $paths->getBuildAssetsPath());
-        $this->assertSame('/var/www/app/public/dist/assets', $paths->getBuildAssetsPath('dist'));
+        // The method should always return public/assets regardless of the buildDirectory parameter
+        $this->assertSame('/var/www/app/public/assets', $paths->getBuildAssetsPath());
+        $this->assertSame('/var/www/app/public/assets', $paths->getBuildAssetsPath('dist'));
     }
 
     /**
@@ -302,18 +303,22 @@ class PathsTest extends TestCase
     public function testGetViteManifestPath(): void
     {
         $rootPath = sys_get_temp_dir() . '/slim4-path-test-' . uniqid();
-        mkdir($rootPath . '/public/build/.vite', 0777, true);
-        file_put_contents($rootPath . '/public/build/.vite/manifest.json', '{}');
+        mkdir($rootPath . '/public/assets/.vite', 0777, true);
+        file_put_contents($rootPath . '/public/assets/.vite/manifest.json', '{}');
 
         $paths = new Paths($rootPath);
 
-        $this->assertSame($rootPath . '/public/build/.vite/manifest.json', $paths->getViteManifestPath());
+        $this->assertSame($rootPath . '/public/assets/.vite/manifest.json', $paths->getViteManifestPath());
 
-        // Test with a different build directory
-        mkdir($rootPath . '/public/dist', 0777, true);
-        file_put_contents($rootPath . '/public/dist/manifest.json', '{}');
+        // Test with manifest.json directly in assets directory
+        unlink($rootPath . '/public/assets/.vite/manifest.json');
+        rmdir($rootPath . '/public/assets/.vite');
+        file_put_contents($rootPath . '/public/assets/manifest.json', '{}');
 
-        $this->assertSame($rootPath . '/public/dist/manifest.json', $paths->getViteManifestPath('dist'));
+        $this->assertSame($rootPath . '/public/assets/manifest.json', $paths->getViteManifestPath());
+
+        // The buildDirectory parameter should be ignored
+        $this->assertSame($rootPath . '/public/assets/manifest.json', $paths->getViteManifestPath('dist'));
 
         // Clean up
         $this->removeDirectory($rootPath);
@@ -329,8 +334,9 @@ class PathsTest extends TestCase
         $rootPath = '/var/www/app';
         $paths = new Paths($rootPath);
 
-        $this->assertSame('/var/www/app/public/build/.vite/manifest.json', $paths->getViteManifestPath());
-        $this->assertSame('/var/www/app/public/dist/.vite/manifest.json', $paths->getViteManifestPath('dist'));
+        $this->assertSame('/var/www/app/public/assets/.vite/manifest.json', $paths->getViteManifestPath());
+        // The buildDirectory parameter should be ignored
+        $this->assertSame('/var/www/app/public/assets/.vite/manifest.json', $paths->getViteManifestPath('dist'));
     }
 
     /**
