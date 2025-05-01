@@ -19,7 +19,7 @@ use Slim\App;
 class BasePathMiddleware implements MiddlewareInterface
 {
     /**
-     * @var App The Slim app
+     * @var App<\Psr\Container\ContainerInterface> The Slim app
      */
     private App $app;
 
@@ -31,7 +31,7 @@ class BasePathMiddleware implements MiddlewareInterface
     /**
      * Constructor.
      *
-     * @param App $app The Slim app
+     * @param App<\Psr\Container\ContainerInterface> $app The Slim app
      * @param string|null $phpSapi The PHP_SAPI value (default: null)
      */
     public function __construct(App $app, ?string $phpSapi = null)
@@ -83,7 +83,7 @@ class BasePathMiddleware implements MiddlewareInterface
      */
     private function getBasePathByScriptName(array $serverParams): string
     {
-        $scriptName = (string)($serverParams['SCRIPT_NAME'] ?? '');
+        $scriptName = isset($serverParams['SCRIPT_NAME']) ? (string)$serverParams['SCRIPT_NAME'] : '';
         $basePath = str_replace('\\', '/', dirname($scriptName));
 
         if (strlen($basePath) > 1) {
@@ -107,10 +107,11 @@ class BasePathMiddleware implements MiddlewareInterface
         }
 
         $scriptName = $serverParams['SCRIPT_NAME'] ?? '';
-        $requestUri = (string)$serverParams['REQUEST_URI'];
+        $requestUri = isset($serverParams['REQUEST_URI']) ? (string)$serverParams['REQUEST_URI'] : '';
 
         $basePath = (string)parse_url($requestUri, PHP_URL_PATH);
-        $scriptDir = str_replace('\\', '/', dirname((string)$scriptName, 2));
+        $scriptName = isset($serverParams['SCRIPT_NAME']) ? (string)$serverParams['SCRIPT_NAME'] : '';
+        $scriptDir = str_replace('\\', '/', dirname($scriptName, 2));
 
         if ($scriptDir === '/') {
             return '';
