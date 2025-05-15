@@ -6,7 +6,7 @@ Root path management with auto-discovery and base path detection for Slim 4 appl
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/responsive-sk/slim4-root.svg?style=flat-square)](https://packagist.org/packages/responsive-sk/slim4-root)
 
-## New in 1.3
+## New in 1.4
 
 - **Automatic root path discovery** for common directory structures
 - **Built-in path validation** with detailed error messages
@@ -15,6 +15,7 @@ Root path management with auto-discovery and base path detection for Slim 4 appl
 - **Enhanced developer experience** with more intuitive API
 - **No more relative paths** with `../` - everything is relative to the root
 - **Base path detection** for applications running in subdirectories
+- **Testing utilities** for easier test setup and execution
 
 ## Features
 
@@ -353,17 +354,17 @@ $paths = new Paths(
 
 ## Feature Comparison
 
-| Feature | v1.1 | v1.2 | v1.3 |
-|---------|------|------|------|
-| Auto-discovery | ❌ No | ✅ Yes | ✅ Yes |
-| Path validation | ❌ Basic | ✅ Comprehensive | ✅ Comprehensive |
-| Path normalization | ❌ No | ✅ Yes | ✅ Yes |
-| Error handling | ❌ Generic exceptions | ✅ Dedicated exceptions | ✅ Dedicated exceptions |
-| Relative paths | ❌ Manual `../` | ✅ Everything relative to root | ✅ Everything relative to root |
-| Base path detection | ❌ No | ✅ Yes | ✅ Yes |
-| Testing utilities | ❌ No | ❌ No | ✅ Yes |
-| Test coverage | ✅ Good | ✅ Excellent | ✅ Excellent |
-| Flexibility | ✅ Good | ✅ Excellent | ✅ Excellent |
+| Feature | v1.1 | v1.2 | v1.3 | v1.4 |
+|---------|------|------|------|------|
+| Auto-discovery | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
+| Path validation | ❌ Basic | ✅ Comprehensive | ✅ Comprehensive | ✅ Comprehensive |
+| Path normalization | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
+| Error handling | ❌ Generic exceptions | ✅ Dedicated exceptions | ✅ Dedicated exceptions | ✅ Dedicated exceptions |
+| Relative paths | ❌ Manual `../` | ✅ Everything relative to root | ✅ Everything relative to root | ✅ Everything relative to root |
+| Base path detection | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
+| Testing utilities | ❌ No | ❌ No | ✅ Basic | ✅ Enhanced |
+| Test coverage | ✅ Good | ✅ Excellent | ✅ Excellent | ✅ Excellent |
+| Flexibility | ✅ Good | ✅ Excellent | ✅ Excellent | ✅ Excellent |
 
 ## Auto-Discovery
 
