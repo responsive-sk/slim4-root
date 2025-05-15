@@ -16,6 +16,7 @@ Root path management with auto-discovery and base path detection for Slim 4 appl
 - **No more relative paths** with `../` - everything is relative to the root
 - **Base path detection** for applications running in subdirectories
 - **Testing utilities** for easier test setup and execution
+- **Monolog integration** for easy logging setup
 
 ## Features
 
@@ -26,6 +27,7 @@ Root path management with auto-discovery and base path detection for Slim 4 appl
 * Middleware for accessing paths in route handlers
 * **Base path detection** for applications running in subdirectories
 * **Testing utilities** for easier test setup and execution
+* **Monolog integration** for easy logging setup
 * PSR-11 container integration
 * No dependencies (except Slim 4 and PSR Container)
 * Fully tested
@@ -223,21 +225,57 @@ $container->set(Twig::class, function (ContainerInterface $container) {
 ### Integration with Monolog
 
 ```php
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Psr\Log\LoggerInterface;
+use Monolog\Level;
+use Slim4\Root\Integration\MonologFactory;
 use Slim4\Root\PathsInterface;
+use Psr\Log\LoggerInterface;
 
 // Register Logger with the container
 $container->set(LoggerInterface::class, function (ContainerInterface $container) {
     $paths = $container->get(PathsInterface::class);
+    $factory = new MonologFactory($paths);
 
-    $logger = new Logger('app');
-    $logger->pushHandler(new StreamHandler($paths->getLogsPath() . '/app.log', Logger::DEBUG));
-
-    return $logger;
+    return $factory->createLogger([
+        'name' => 'app',
+        'path' => 'app.log',
+        'level' => Level::Debug,
+        'rotating' => true,
+        'max_files' => 7,
+    ]);
 });
 ```
+
+Or use the `MonologProvider` for easier setup:
+
+```php
+use Monolog\Level;
+use Slim4\Root\Integration\MonologProvider;
+
+// Register a single logger
+MonologProvider::register($container, [
+    'name' => 'app',
+    'path' => 'app.log',
+    'level' => Level::Debug,
+]);
+
+// Register multiple loggers
+MonologProvider::registerMultiple($container, [
+    'default' => [
+        'path' => 'app.log',
+        'level' => Level::Debug,
+    ],
+    'error' => [
+        'path' => 'error.log',
+        'level' => Level::Error,
+    ],
+]);
+
+// Use loggers
+$logger = $container->get(LoggerInterface::class); // Default logger
+$errorLogger = $container->get('logger.error');
+```
+
+For more details, see [Monolog Integration](docs/MONOLOG.en.md).
 
 ### Testing Utilities
 
@@ -329,6 +367,21 @@ TestContainer::set(Paths::class, $paths);
 - `remove(string $key)` - Remove an item from the container
 - `clear()` - Clear all items from the container
 
+### MonologFactory
+
+- `createLogger(array $config = [])` - Create a new Monolog logger instance
+- `createConsoleLogger(string $name, Level $level)` - Create a console logger
+- `createFileLogger(string $name, string $path, Level $level)` - Create a file logger
+- `createRotatingLogger(string $name, string $path, int $maxFiles, Level $level)` - Create a rotating file logger
+
+### MonologProvider
+
+- `register(ContainerInterface $container, array $config)` - Register a logger in the container
+- `registerMultiple(ContainerInterface $container, array $loggers)` - Register multiple loggers
+- `registerConsoleLogger(ContainerInterface $container, string $name, Level $level)` - Register a console logger
+- `registerFileLogger(ContainerInterface $container, string $name, string $path, Level $level)` - Register a file logger
+- `registerRotatingLogger(ContainerInterface $container, string $name, string $path, int $maxFiles, Level $level)` - Register a rotating file logger
+
 ## Customizing Paths
 
 You can customize the paths by passing an array of custom paths to the constructor:
@@ -363,6 +416,7 @@ $paths = new Paths(
 | Relative paths | ❌ Manual `../` | ✅ Everything relative to root | ✅ Everything relative to root | ✅ Everything relative to root |
 | Base path detection | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
 | Testing utilities | ❌ No | ❌ No | ✅ Basic | ✅ Enhanced |
+| Monolog integration | ❌ No | ❌ No | ❌ No | ✅ Yes |
 | Test coverage | ✅ Good | ✅ Excellent | ✅ Excellent | ✅ Excellent |
 | Flexibility | ✅ Good | ✅ Excellent | ✅ Excellent | ✅ Excellent |
 
@@ -433,6 +487,7 @@ For detailed documentation, see:
 - [Template Engines Integration](docs/TEMPLATE-ENGINES.en.md) - Integration with popular PHP template engines
 - [Advanced Use Cases](docs/USE-CASES.en.md) - Detailed use cases for various scenarios and architectures
 - [Testing](docs/TESTING.en.md) - Testing utilities and integration with PHPUnit
+- [Monolog Integration](docs/MONOLOG.en.md) - Integration with Monolog for logging
 
 ## License
 
