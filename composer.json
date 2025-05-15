@@ -1,7 +1,7 @@
 {
     "name": "responsive-sk/slim4-root",
-    "description": "Root path management with auto-discovery and base path detection for Slim 4 applications",
-    "version": "1.1.0",
+    "description": "Root path management with auto-discovery, base path detection and testing utilities for Slim 4 applications",
+    "version": "2.1.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -13,7 +13,9 @@
         "auto-discovery",
         "path-validation",
         "path-normalization",
-        "basepath"
+        "basepath",
+        "testing",
+        "phpunit"
     ],
     "authors": [
         {

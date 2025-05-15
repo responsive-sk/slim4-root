@@ -24,6 +24,7 @@ Root path management with auto-discovery and base path detection for Slim 4 appl
 * Path **validation** and **normalization**
 * Middleware for accessing paths in route handlers
 * **Base path detection** for applications running in subdirectories
+* **Testing utilities** for easier test setup and execution
 * PSR-11 container integration
 * No dependencies (except Slim 4 and PSR Container)
 * Fully tested
@@ -237,6 +238,53 @@ $container->set(LoggerInterface::class, function (ContainerInterface $container)
 });
 ```
 
+### Testing Utilities
+
+The package includes a `Testing` module that provides utilities for easier test setup and execution.
+
+#### TestContainer
+
+`TestContainer` is a simple static container for sharing objects between tests without using globals.
+
+```php
+use Slim4\Root\Testing\TestContainer;
+use Slim4\Root\Paths;
+
+// In your bootstrap file
+$paths = new Paths(__DIR__);
+TestContainer::set(Paths::class, $paths);
+
+// In your tests
+$paths = TestContainer::get(Paths::class);
+```
+
+#### Bootstrap File
+
+The package includes a bootstrap file that you can use in your PHPUnit configuration:
+
+```php
+// tests/bootstrap.php
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/responsive-sk/slim4-root/src/Testing/bootstrap.php';
+```
+
+Or you can create your own bootstrap file:
+
+```php
+// tests/bootstrap.php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Slim4\Root\Paths;
+use Slim4\Root\Testing\TestContainer;
+
+// Create Paths object
+$rootPath = (string)realpath(__DIR__ . '/..');
+$paths = new Paths($rootPath);
+
+// Store in TestContainer
+TestContainer::set(Paths::class, $paths);
+```
+
 ## Available Methods
 
 ### PathsInterface
@@ -271,6 +319,14 @@ $container->set(LoggerInterface::class, function (ContainerInterface $container)
 ### PathsNormalizer
 
 - `normalize(string $path)` - Normalize path
+
+### TestContainer
+
+- `set(string $key, mixed $value)` - Set an item in the container
+- `get(string $key, mixed $default = null)` - Get an item from the container
+- `has(string $key)` - Check if an item exists in the container
+- `remove(string $key)` - Remove an item from the container
+- `clear()` - Clear all items from the container
 
 ## Customizing Paths
 
@@ -366,14 +422,15 @@ composer test
 
 For detailed documentation, see:
 
-- [Documentation (English)](DOCUMENTATION.en.md)
-- [Dokumentácia (Slovenčina)](DOCUMENTATION.md)
+- [Documentation (English)](docs/DOCUMENTATION.en.md)
+- [Dokumentácia (Slovenčina)](docs/DOCUMENTATION.md)
 
 ### Examples
 
-- [Simple Example](SIMPLE-EXAMPLE.en.md) - Basic usage in a typical Slim 4 project
-- [Template Engines Integration](TEMPLATE-ENGINES.en.md) - Integration with popular PHP template engines
-- [Advanced Use Cases](USE-CASES.en.md) - Detailed use cases for various scenarios and architectures
+- [Simple Example](docs/SIMPLE-EXAMPLE.en.md) - Basic usage in a typical Slim 4 project
+- [Template Engines Integration](docs/TEMPLATE-ENGINES.en.md) - Integration with popular PHP template engines
+- [Advanced Use Cases](docs/USE-CASES.en.md) - Detailed use cases for various scenarios and architectures
+- [Testing](docs/TESTING.en.md) - Testing utilities and integration with PHPUnit
 
 ## License
 
@@ -390,8 +447,8 @@ Responsive.sk is a web development company specializing in creating modern, resp
 
 ## Roadmap
 
-We're planning to expand this package with integrations for other frameworks and libraries. Check out our [TODO list](TODO-COMMUNITY.md) for upcoming features and ways to contribute.
+We're planning to expand this package with integrations for other frameworks and libraries. Check out our [TODO list](docs/TODO-COMMUNITY.md) for upcoming features and ways to contribute.
 
 ## Community
 
-We're looking to collaborate with Laminas and Cycle ORM communities to create integrations for these frameworks. If you're interested in contributing, please check out our [TODO list](TODO-COMMUNITY.md) and get in touch!
+We're looking to collaborate with Laminas and Cycle ORM communities to create integrations for these frameworks. If you're interested in contributing, please check out our [TODO list](docs/TODO-COMMUNITY.md) and get in touch!
